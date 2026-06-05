@@ -1,0 +1,22 @@
+package in.tech_camp.calendar_app.repository;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
+
+import in.tech_camp.calendar_app.entity.PlanEntity;
+
+@Mapper
+public interface PlanRepository {
+  // 予定を全て取得
+  @Select("SELECT * FROM plans")
+  List<PlanEntity> findAll();
+
+  // 予定をDBに保存
+  @Insert("INSERT INTO plans(title, event_type, start_date, end_date, description) VALUES (#{title}, #{eventType}, #{startDate}, #{endDate}, #{description})")
+  @Options(useGeneratedKeys = true, keyProperty = "id")
+  void insert(PlanEntity plan);
+}
