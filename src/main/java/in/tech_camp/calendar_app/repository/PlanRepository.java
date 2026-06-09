@@ -2,6 +2,7 @@ package in.tech_camp.calendar_app.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -19,4 +20,8 @@ public interface PlanRepository {
   @Insert("INSERT INTO plans(title, event_type, start_date, end_date, description) VALUES (#{title}, #{eventType}, #{startDate}, #{endDate}, #{description})")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insert(PlanEntity plan);
+
+  // 予定を削除
+  @Delete("DELETE FROM plans WHERE id = #{id}")
+  void deleteById(Integer id);
 }

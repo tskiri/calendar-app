@@ -3,8 +3,10 @@ package in.tech_camp.calendar_app.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import in.tech_camp.calendar_app.entity.PlanEntity;
+import in.tech_camp.calendar_app.form.PlanForm;
 import in.tech_camp.calendar_app.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -21,9 +23,23 @@ public class PlanService {
         return planRepository.findAll();
     }
 
-    // 3. 「新しい予定を保存して！」と言われたときの処理
-    public void createPlan(PlanEntity plan) {
-        // リポジトリに「この予定をDBに保存して」と丸投げして実行する
+    // コントローラーを薄くするため、FormからEntityへの変換（ビジネスロジック）をここで担当する
+    @Transactional
+    public PlanEntity createPlan(PlanForm form) {
+        PlanEntity plan = new PlanEntity();
+        plan.setTitle(form.getTitle());
+        plan.setStartDate(form.getStartDate());
+        plan.setEndDate(form.getEndDate());
+        plan.setEventType(form.getEventType());
+        plan.setDescription(form.getDescription() != null ? form.getDescription() : "");
+        
+        // Repository側では、MyBatisの #{}（プレースホルダー）を使っているためSQLインジェクション対策もバッチリです
         planRepository.insert(plan);
+        return plan; // 保存されたデータ（IDが振られたもの）を返す
+    }
+
+    @Transactional
+    public void deletePlan(Integer id) {
+        planRepository.deleteById(id);
     }
 }
