@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import in.tech_camp.calendar_app.entity.PlanEntity;
 
@@ -24,4 +25,8 @@ public interface PlanRepository {
   // 予定を削除
   @Delete("DELETE FROM plans WHERE id = #{id}")
   void deleteById(Integer id);
+
+  // 予定を更新
+  @Update("UPDATE plans SET title = #{title}, event_type = #{eventType}, start_date = #{startDate}, end_date = #{endDate}, description = #{description} WHERE id = #{id}")
+  void update(PlanEntity plan);
 }
