@@ -35,7 +35,7 @@ public class PlanController {
 
   // 全予定の取得
   @GetMapping("/")
-  public ResponseEntity<?> getplans() {
+  public ResponseEntity<?> getPlans() {
     try {
       List<PlanEntity> plans = planService.getPlans();
       return ResponseEntity.ok().body(plans);
