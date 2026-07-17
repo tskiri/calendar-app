@@ -1,4 +1,16 @@
 services:
+  # Spring Bootアプリのコンテナ
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # application.properties の設定を上書きして「db」コンテナに向けます
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/calendar_app
+    depends_on:
+      - db
+  
+  # PostgreSQLのコンテナ
   db:
     image: postgres:15
     container_name: calendar-postgres
